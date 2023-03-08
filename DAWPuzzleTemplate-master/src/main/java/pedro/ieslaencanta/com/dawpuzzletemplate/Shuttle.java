@@ -113,7 +113,6 @@ public class Shuttle {
     }
 
     public void shoot(Rectangle2D r){
-        this.bubble = null;
         this.bubble = new Bubble();
         this.bubble.setBalltype(this.bubbles_next[0]);
         for(int i=0; i<this.bubbles_next.length;i++){

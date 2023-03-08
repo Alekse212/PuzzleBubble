@@ -20,40 +20,42 @@ public class Bubblegrid {
 
     public boolean collision(Bubble bubble) {
         if (bubble != null) {
-            int posXGrid = (int) ((bubble.getPosicion().getX() - this.rectangle2D.getMinX()) / Bubble.WIDTH);
             int posYGrid = (int) ((bubble.getPosicion().getY()) / Bubble.HEIGHT) - 1;
-            boolean paredtop = bubble.isParedtop();
+            int posXGrid = (int) ((bubble.getPosicion().getX() - this.rectangle2D.getMinX()) / Bubble.WIDTH);
             if (posYGrid == 0) {
-                int posX = 0;
-                if (posYGrid % 2 == 0) {
-                    posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX())+ Bubble.WIDTH/2;
-                } else {
-                    posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX() + (Bubble.WIDTH / 2))+ Bubble.WIDTH/2;
-                    if (posX > rectangle2D.getMaxX()) {
-                        posYGrid += 1;
-                        posX -= Bubble.WIDTH;
-                    }
-                }
+                int posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX())+ Bubble.WIDTH/2;
                 int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
                 bubble.setPosicion(new Point2D(posX, posY));
                 grid_buble[posYGrid][posXGrid] = bubble;
                 return true;
             } else {
-                if (grid_buble[posYGrid-1][posXGrid] != null) {
-                    int posX = 0;
-                    if (posYGrid % 2 == 0) {
-                        posX = (int) ((Bubble.HEIGHT * (posXGrid)) + rectangle2D.getMinX())+ Bubble.WIDTH/2;
-                    } else {
-                        posX = (int) ((Bubble.HEIGHT * (posXGrid)) + rectangle2D.getMinX() + (Bubble.WIDTH / 2))+ Bubble.WIDTH/2;
-                        if (posX > rectangle2D.getMaxX()) {
-                            posYGrid += 1;
-                            posX -= Bubble.WIDTH;
+                for(int i = 0; i < grid_buble[posYGrid-1].length; i++){
+                    if(grid_buble[posYGrid-1][i] != null) {
+                        double distanceb = bubble.getPosicion().distance(grid_buble[posYGrid-1][i].getPosicion());
+                        int posX = 0;
+                        if(distanceb < 16){
+//                            if(grid_buble[posYGrid][posXGrid] != null){
+//                                if(grid_buble[posYGrid][posXGrid].getPosicion().getX() - bubble.getPosicion().getX() > 0 ){
+                                    //posXGrid -= 1;
+//                                }else{
+                                    //posXGrid += 1;
+//                                }
+//                            }
+                            if(posYGrid%2 == 0) {
+                                posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX()) + Bubble.WIDTH / 2;
+                            }else{
+                                posXGrid = (int) ((bubble.getPosicion().getX() - this.rectangle2D.getMinX()-Bubble.WIDTH / 2) / Bubble.WIDTH);
+//                                if(posXGrid != 0) {
+//                                    posXGrid -= 1;
+//                                }
+                                posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX()) + Bubble.WIDTH;
+                            }
+                            int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
+                            bubble.setPosicion(new Point2D(posX, posY));
+                            grid_buble[posYGrid][posXGrid] = bubble;
+                            return true;
                         }
                     }
-                    int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
-                    bubble.setPosicion(new Point2D(posX, posY));
-                    grid_buble[posYGrid][posXGrid] = bubble;
-                    return true;
                 }
             }
         }
