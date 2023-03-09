@@ -10,6 +10,8 @@ public class Bubblegrid {
     private Rectangle2D rectangle2D;
     private int bum_balls_min = 3;
     private Bubble[][] grid_buble = new Bubble[Bubblegrid.row][Bubblegrid.column];
+    private int explo_counter = 1;
+    private boolean explotar = false;
 
     public Bubblegrid() {
     }
@@ -27,6 +29,8 @@ public class Bubblegrid {
                 int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
                 bubble.setPosicion(new Point2D(posX, posY));
                 grid_buble[posYGrid][posXGrid] = bubble;
+                explocion(posXGrid,posYGrid,bubble,1);
+                explotar = false;
                 return true;
             } else {
                 for(int i = 0; i < grid_buble[posYGrid-1].length; i++){
@@ -53,6 +57,8 @@ public class Bubblegrid {
                             int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
                             bubble.setPosicion(new Point2D(posX, posY));
                             grid_buble[posYGrid][posXGrid] = bubble;
+                            explocion(posXGrid,posYGrid,bubble,2);
+                            explotar = false;
                             return true;
                         }
                     }
@@ -60,6 +66,28 @@ public class Bubblegrid {
             }
         }
         return  false;
+    }
+
+    private void explocion(int posxgrid, int posygrid, Bubble bubble, int ent){
+        for(int i = posygrid-1; i < posygrid+1; i++){
+            for (int j = posxgrid-1; j < posxgrid+2; j++) {
+                if (i >= 0 && j >= 0) {
+                    if (this.grid_buble[i][j] != bubble && this.grid_buble[i][j] != null && grid_buble[posygrid][posxgrid].getBalltype() != null) {
+                        if (this.grid_buble[i][j].getBalltype() == grid_buble[posygrid][posxgrid].getBalltype()) {
+                            if(ent >= 3){
+                                explotar = true;
+                            }
+                            explocion(j, i , this.grid_buble[i][j], ent+1);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        if(explotar){
+            grid_buble[posygrid][posxgrid] = null;
+        }
     }
 
     public void paint(GraphicsContext gc){
