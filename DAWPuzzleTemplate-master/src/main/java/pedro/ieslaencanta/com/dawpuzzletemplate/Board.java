@@ -35,6 +35,7 @@ public class Board implements IKeyListener {
     private boolean iscolission = false;
     private Bubble bubble;
     private boolean left_press, right_press;
+    private boolean explotarball = false;
 
     /**
      * constructor
@@ -139,6 +140,7 @@ public class Board implements IKeyListener {
         this.bubblegrid.paint(gc);
 
     }
+
 
     private void process_input() {
         if (this.left_press) {

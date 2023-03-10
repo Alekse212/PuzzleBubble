@@ -67,18 +67,19 @@ public class Bubblegrid {
         }
         return  false;
     }
-
     private void explocion(int posxgrid, int posygrid, Bubble bubble, int ent){
         for(int i = posygrid-1; i < posygrid+1; i++){
             for (int j = posxgrid-1; j < posxgrid+2; j++) {
                 if (i >= 0 && j >= 0) {
                     if (this.grid_buble[i][j] != bubble && this.grid_buble[i][j] != null && grid_buble[posygrid][posxgrid].getBalltype() != null) {
                         if (this.grid_buble[i][j].getBalltype() == grid_buble[posygrid][posxgrid].getBalltype()) {
-                            if(ent >= 3){
-                                explotar = true;
+                            if(!this.grid_buble[i][j].isExplotado()) {
+                                this.grid_buble[i][j].setExplotado(true);
+                                if (ent >= 3) {
+                                    explotar = true;
+                                }
+                                explocion(j, i, this.grid_buble[i][j], ent + 1);
                             }
-                            explocion(j, i , this.grid_buble[i][j], ent+1);
-
                         }
                     }
                 }
@@ -86,7 +87,9 @@ public class Bubblegrid {
         }
 
         if(explotar){
-            grid_buble[posygrid][posxgrid] = null;
+            this.grid_buble[posygrid][posxgrid].setExplotado(true);
+        }else{
+            grid_buble[posygrid][posxgrid].setExplotado(false);
         }
     }
 
@@ -97,7 +100,14 @@ public class Bubblegrid {
         for(int i=0; i<balls.length; i++){
             for(int j=0; j<balls[i].length; j++){
                 if (balls[i][j] != null) {
-                    balls[i][j].paint(gc);
+                    if(balls[i][j].isExplotado()){
+                        balls[i][j].paintexplocion(gc);
+                        this.grid_buble[i][j] = null;
+                    }
+                    if (balls[i][j] != null) {
+                        balls[i][j].paint(gc);
+                    }
+
                 }
             }
         }

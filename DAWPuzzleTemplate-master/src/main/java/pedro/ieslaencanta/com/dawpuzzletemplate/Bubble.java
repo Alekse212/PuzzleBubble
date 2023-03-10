@@ -16,12 +16,18 @@ public class Bubble {
     private float angulo = 0;
     private float velocidad = 1f;
     private BubbleType balltype;
+    private BubbleTypeExplotacion bubletypeExplotacion;
     private boolean paredtop =false;
+    private boolean explotado= false;
     public static int WIDTH = 16, HEIGHT = 16;
-    public Bubble(double x, double y, BubbleType balltype) {
+
+
+
+    public Bubble(double x, double y, BubbleType balltype, BubbleTypeExplotacion ballexplotacion) {
         this.estado = State.STOP;
         this.posicion = new Point2D(x, y);
         this.balltype = balltype;
+        this.bubletypeExplotacion = ballexplotacion;
     }
     public Bubble() {
         this.estado = State.STOP;
@@ -32,6 +38,7 @@ public class Bubble {
         this.angulo = angle;
         this.posicion = new Point2D(vertical_center, horizontal_center);
         BubbleType[] balltypes = BubbleType.values();
+        BubbleTypeExplotacion[] bubbleTypeExplotacions = BubbleTypeExplotacion.values();
         this.stop();
     }
     public boolean isPlay() {
@@ -88,6 +95,13 @@ public class Bubble {
     }
     public void stop() {
         this.estado = State.STOP;
+    }
+    public boolean isExplotado() {
+        return explotado;
+    }
+
+    public void setExplotado(boolean explotado) {
+        this.explotado = explotado;
     }
     /**
      * @return the angulo
@@ -187,8 +201,42 @@ public class Bubble {
             Game.SCALE, (this.getPosicion().getY() - HEIGHT / 2) * Game.SCALE);
         }
     }
+
+    public BubbleTypeExplotacion getBubletypeExplotacion() {
+        return bubletypeExplotacion;
+    }
+
+    public void setBubletypeExplotacion(BubbleTypeExplotacion bubletypeExplotacion) {
+        this.bubletypeExplotacion = bubletypeExplotacion;
+    }
+
     public boolean collision(Bubble ball) {
         return true;
+    }
+    public void paintexplocion(GraphicsContext gc){
+        for(int i = 0; i<7;i++) {
+            Resources r = Resources.getInstance();
+            gc.drawImage(r.getImage("spriters"),
+                    //inicio de la posicion
+                    this.getBubletypeExplotacion().getX()+i*33,
+                    this.getBubletypeExplotacion().getY(),
+                    Bubble.WIDTH,
+                    Bubble.HEIGHT,
+                    //dibujar en el lienzo
+                    (this.posicion.getX() - Bubble.WIDTH / 2) * Game.SCALE,
+                    (this.posicion.getY() - Bubble.HEIGHT / 2) * Game.SCALE,
+                    Bubble.WIDTH * Game.SCALE,
+                    Bubble.HEIGHT * Game.SCALE);
+            //si se esta depurando
+            if (this.debug) {
+                gc.setStroke(Color.RED);
+                gc.fillOval(this.getPosicion().getX() * Game.SCALE - 5,
+                        (this.getPosicion().getY()) * Game.SCALE - 5, 10, 10);
+                gc.setStroke(Color.GREEN);
+                gc.strokeText(this.angulo + "º x:" + this.getPosicion().getX() + " y:" + this.getPosicion().getY(), (this.getPosicion().getX() - WIDTH / 2) *
+                        Game.SCALE, (this.getPosicion().getY() - HEIGHT / 2) * Game.SCALE);
+            }
+        }
     }
     public String toString() {
         return "x:" + this.posicion.getX() + " y:" + this.posicion.getY() + " angulo:" + this.angulo + " w:" + Bubble.WIDTH + " h:" + Bubble.HEIGHT;

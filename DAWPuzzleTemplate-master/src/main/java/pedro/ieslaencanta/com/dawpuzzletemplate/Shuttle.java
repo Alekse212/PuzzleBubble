@@ -11,6 +11,7 @@ public class Shuttle {
     private static float max_angulo = 90;
     private Bubble bubble;
     private BubbleType[] bubbles_next = new BubbleType[2];
+    private BubbleTypeExplotacion[] bubletypeexplotacions = new BubbleTypeExplotacion[2];
     private boolean debug;
     private float angulo_pass = 1.4f;
     private Point2D center;
@@ -20,8 +21,9 @@ public class Shuttle {
     public Shuttle(Point2D center) {
         this.center = center;
         for(int i = 0; i < this.bubbles_next.length; i++){
-            this.bubbles_next[i] = BubbleType.values()[ (int)
-                    (Math.random()*BubbleType.values().length)];
+            int temp = (int) (Math.random()*BubbleType.values().length);
+            this.bubbles_next[i] = BubbleType.values()[ temp];
+            this.bubletypeexplotacions[i] = BubbleTypeExplotacion.values()[temp];
         }
     }
 
@@ -115,12 +117,14 @@ public class Shuttle {
     public void shoot(Rectangle2D r){
         this.bubble = new Bubble();
         this.bubble.setBalltype(this.bubbles_next[0]);
+        this.bubble.setBubletypeExplotacion(this.bubletypeexplotacions[0]);
         for(int i=0; i<this.bubbles_next.length;i++){
             if(this.bubbles_next.length-1 != i) {
                 this.bubbles_next[i] = this.bubbles_next[i + 1];
             }else{
-                this.bubbles_next[i] = BubbleType.values()[ (int)
-                        (Math.random()*BubbleType.values().length)];
+                int temp = (int) (Math.random()*BubbleType.values().length);
+                this.bubbles_next[i] = BubbleType.values()[temp];
+                this.bubletypeexplotacions[i] = BubbleTypeExplotacion.values()[temp];
             }
         }
         this.bubble.init(new Point2D(
