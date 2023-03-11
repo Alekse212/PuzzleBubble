@@ -9,7 +9,7 @@ public enum BubbleTypeExplotacion {
         PURPLE(170, 1911),
         ORANGE(725, 1911),
         GRAY(170, 1944),
-        WRITE(725, 2010);
+        WRITE(725, 1944);
         private final int x;
         private final int y;
 
