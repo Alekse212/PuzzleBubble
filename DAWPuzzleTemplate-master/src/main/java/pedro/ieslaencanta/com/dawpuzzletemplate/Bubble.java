@@ -216,12 +216,17 @@ public class Bubble {
     public void paintexplocion(GraphicsContext gc){
         for(int i = 0; i<7;i++) {
             Resources r = Resources.getInstance();
+            try {
+                Thread.sleep(70);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             gc.drawImage(r.getImage("spriters"),
                     //inicio de la posicion
                     this.getBubletypeExplotacion().getX()+i*33,
                     this.getBubletypeExplotacion().getY(),
-                    Bubble.WIDTH,
-                    Bubble.HEIGHT,
+                    33,
+                    33,
                     //dibujar en el lienzo
                     (this.posicion.getX() - Bubble.WIDTH / 2) * Game.SCALE,
                     (this.posicion.getY() - Bubble.HEIGHT / 2) * Game.SCALE,

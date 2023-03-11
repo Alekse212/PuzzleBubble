@@ -37,7 +37,7 @@ public class Bubblegrid {
                     if(grid_buble[posYGrid-1][i] != null) {
                         double distanceb = bubble.getPosicion().distance(grid_buble[posYGrid-1][i].getPosicion());
                         int posX = 0;
-                        if(distanceb < 16){
+                        if(distanceb < 16 && (grid_buble[posYGrid-1][i].getPosicion().getY()-Bubble.HEIGHT/2)<(bubble.getPosicion().getY()-Bubble.HEIGHT/2)){
 //                            if(grid_buble[posYGrid][posXGrid] != null){
 //                                if(grid_buble[posYGrid][posXGrid].getPosicion().getX() - bubble.getPosicion().getX() > 0 ){
                                     //posXGrid -= 1;
@@ -55,7 +55,19 @@ public class Bubblegrid {
                                 posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX()) + Bubble.WIDTH;
                             }
                             int posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
+                            if(grid_buble[posYGrid][posXGrid] != null){
+                                posYGrid = (int) ((bubble.getPosicion().getY()) / Bubble.HEIGHT)-2;
+                                posY = (int) ((Bubble.HEIGHT * posYGrid) + rectangle2D.getMinY())+Bubble.HEIGHT/2;
+                                posXGrid = (int) ((bubble.getPosicion().getX() - this.rectangle2D.getMinX()) / Bubble.WIDTH);
+                                if(posYGrid%2 == 0) {
+                                    posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX()) + Bubble.WIDTH / 2;
+                                }else{
+                                    posXGrid = (int) ((bubble.getPosicion().getX() - this.rectangle2D.getMinX()-Bubble.WIDTH / 2) / Bubble.WIDTH);
+                                    posX = (int) ((Bubble.WIDTH * (posXGrid)) + rectangle2D.getMinX()) + Bubble.WIDTH;
+                                }
+                            }
                             bubble.setPosicion(new Point2D(posX, posY));
+
                             grid_buble[posYGrid][posXGrid] = bubble;
                             explocion(posXGrid,posYGrid,bubble,2);
                             explotar = false;

@@ -22,7 +22,7 @@ public class Shuttle {
         this.center = center;
         for(int i = 0; i < this.bubbles_next.length; i++){
             int temp = (int) (Math.random()*BubbleType.values().length);
-            this.bubbles_next[i] = BubbleType.values()[ temp];
+            this.bubbles_next[i] = BubbleType.values()[temp];
             this.bubletypeexplotacions[i] = BubbleTypeExplotacion.values()[temp];
         }
     }
@@ -121,6 +121,7 @@ public class Shuttle {
         for(int i=0; i<this.bubbles_next.length;i++){
             if(this.bubbles_next.length-1 != i) {
                 this.bubbles_next[i] = this.bubbles_next[i + 1];
+                this.bubletypeexplotacions[i] = this.bubletypeexplotacions[i + 1];
             }else{
                 int temp = (int) (Math.random()*BubbleType.values().length);
                 this.bubbles_next[i] = BubbleType.values()[temp];
